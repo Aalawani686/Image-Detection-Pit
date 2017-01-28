@@ -19,9 +19,17 @@ int threshold(Mat image){
      result = threshLower & threshUpper;
 
      Mat edges;
+     Canny(result, edges, 100, 200);
+
+     int Width = image.cols * 2;
+     int Height = image.rows * 2;
+     Mat dst = Mat(Height, Width, CV_8UC3, Scalar(0,0,0));
+     Rect roi(Rect(0,0,Width * 2, Height * 2));
+     Mat targetROI = dst(roi);
+
      std::vector<std::vector<Point> > contours;
 
-     Canny(result, edges, 100, 200);
+
      cv::findContours(edges, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
      std::vector<std::Point> output;
@@ -31,8 +39,14 @@ int threshold(Mat image){
        approxPolyDP(contours[i], output, cv::arcLength(cv::Mat(contours.at(i)), true) * 0.02
        , bool closed);
        if(output.size()==4){
-         //image, result, edges
-         drawContours(output, contours, i, Scalar(255,0,0));
+         image.copyTo(targetROI);
+         targetROI = dst(cv::Rect(Width,0,image1.cols, image1.rows));
+         result.copyTo(targetROI);
+         targetROI = dst(cv::Rect(0,Height,image1.cols, image1.rows));
+         edges.copyTo(targetROI);
+         //drawContours(output, contours, i, Scalar(255,0,0));
+         //TODO find a way to make drawContours a mat and put into big Mat
+         imshow("allFour", dst);
          break;
        }
 
