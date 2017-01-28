@@ -20,7 +20,7 @@ int threshold(Mat image){
 
      Mat edges;
      Canny(result, edges, 100, 200);
-
+     //does this work
      int Width = image.cols * 2;
      int Height = image.rows * 2;
      Mat dst = Mat(Height, Width, CV_8UC3, Scalar(0,0,0));
