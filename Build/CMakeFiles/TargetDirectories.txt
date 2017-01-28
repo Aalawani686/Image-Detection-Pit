@@ -1,0 +1,1 @@
+/media/psf/Home/documents/Image-Detection-Pit/Build/CMakeFiles/Image.dir
